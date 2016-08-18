@@ -1,6 +1,7 @@
 requests
 requests-cache
 flask
+inflection
 flask-cors
 gunicorn
 caldav
