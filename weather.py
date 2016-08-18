@@ -25,8 +25,10 @@ class Weather(EventType):
         if not gps:
             return
 
+        print gps
         # Use the reverse geocoding for "anonymizing" our GPS coordinates
         agps = reverse_geocoding(gps['lat'], gps['lon'])
+        print agps
 
         w = requests.get('https://api.forecast.io/forecast/{}/{},{}?units=si'.format(
             self.config.get('forecast_api_key'),
@@ -51,6 +53,9 @@ class Weather(EventType):
                 tempMax=int(d['temperatureMax']),
                 tempMin=int(d['temperatureMin']),
             ))
+        precipProbability = []
+        for h in data.get('hourly', {}).get('data', [])[:24]:
+            precipProbability.append(int(h['precipProbability'] * 100))
 
         html = self.render_card_html(
         """<h1 style="margin:0">{{place}}</h1>
@@ -62,9 +67,17 @@ class Weather(EventType):
             <div style="flex: 1;font-size:2.5em;padding-top:20px;">{{temperature}}</div>
             <div style="flex: 1;font-size:1.2em;padding-top:25px;"><span style="padding:10px">&deg;C</span></div>
         </div>
-        <div style="display:flex;">
+        <div style="margin-top:10px;color:#ccc;">Will it rain? <small>(next 24 hours)</small></div>
+        <div style="height:50px;padding-left:25px;">
+        <span class="sparkline">
+        {{#precipProbability}}
+        <span class="index"><span class="count" style="height: {{.}}%;">{{.}}</span></span>
+        {{/precipProbability}}
+        </span>
+        </div>
+        <div style="display:flex;margin-top:20px;">
         {{#daily}}
-        <div style="flex: 1;margin-top:30px;">
+        <div style="flex: 1;">
         <div style="font-size:0.8em;color:#ccc;padding-bottom:10px;">{{day}}</div>
         <i class="wi wi-forecast-io-{{icon}}"></i>
         <div style="font-size:0.5em;color:#ccc;margin-top:10px;"><span style="color:#888;">{{tempMax}}</span> {{tempMin}}</div>
@@ -78,6 +91,7 @@ class Weather(EventType):
             summary=w.get('summary'),
             temperature=w.get('temperature'),
             daily=daily,
+            precipProbability=precipProbability,
         ))
         return [dict(
             icon='fa-sun-o',
