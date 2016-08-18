@@ -1,0 +1,10 @@
+requests
+requests-cache
+flask
+flask-cors
+gunicorn
+caldav
+beautifulsoup4
+pyaml
+plyvel
+Flask-HTTPAuth
