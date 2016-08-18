@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Right Now</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+<style>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  position: relative;
+  min-height: 100%;
+  font-family: sans-serif;
+}
+body {
+  background: #eee;
+  min-height: 100%;
+  padding: 15px 20px;
+}
+.cards {
+  margin: 20px auto;
+}
+.card {
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px #ccc;
+  margin: 8px 0;
+  width: 240px; /* collumn size */
+  transition: box-shadow .5s;
+  cursor: default;
+}
+.card-body {
+  padding:10px 10px 20px 10px;
+}
+.max {
+  max-width: 240px;
+}
+.card.medium {
+  width: 496px; /* medium = (col * 2) + gutter | 496px = (240px * 2) + 16px */
+}
+.card-body h1 {
+  font-size: 1.1em;
+  margin-bottom: 6px;
+  word-wrap: break-word;
+}
+.card-body pre ul {
+  list-style-position: inside;
+}
+</style>
+</head>
+<body>
+<div id="cards">
+{% for card in cards %}
+<div class="card">
+<div class="card-body">
+<div style="margin-bottom:20px;color:#555;"><i class="fa {{card.icon}}" aria-hidden="true"></i> {{ card.title }}</div>
+{{ card.html | safe }}
+</div>
+</div>
+{% endfor %}
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.1.1/masonry.pkgd.min.js"></script>
+<script>
+var masonry = new Masonry(document.querySelector('.note'), {
+    itemSelector: '.note',
+    columnWidth: 240,
+    gutter: 16,
+    fitWidth: true
+});
+</script>
+</body>
+</html>

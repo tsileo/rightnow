@@ -1,3 +1,4 @@
+pystache
 requests
 requests-cache
 flask

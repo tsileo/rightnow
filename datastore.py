@@ -69,8 +69,11 @@ class DataStore(object):
         if dt is None:
             dt = datetime.utcnow()
 
-        k = self._index.iterator(reverse=True).next()
-        if k:
-            return self._open_key(self._key_dt(k[0]))
+        try:
+            k = self._index.iterator(reverse=True).next()
+            if k:
+                return self._open_key(self._key_dt(k[0]))
+        except StopIteration:
+            pass
 
         return None
