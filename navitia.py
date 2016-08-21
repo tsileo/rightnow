@@ -41,6 +41,9 @@ class Navitia(EventType):
 
     @staticmethod
     def _parse_data(data):
+        if 'departures' not in data or not data['departures']:
+            return
+
         departure = data['departures'][0]
         name = u'{physical_mode} {network} {commercial_mode}'.format(**departure['display_informations'])
         headsign = departure['display_informations']['headsign']
@@ -59,8 +62,11 @@ class Navitia(EventType):
             delay=(departure_datetime - base_departure_datetime).seconds / 60,
         )
 
-    def cards(self):
-        data = self._parse_data(self.get_data(datetime.now() + timedelta(seconds=3600*8)))
+    def cards(self, dt):
+        data = self._parse_data(self.get_data(dt))
+        if not data:
+            return []
+        data['departure_date'] = data['departure_datetime'].strftime('%a %d')
         data['departure_datetime'] = data['departure_datetime'].strftime('%H:%M')
         data['base_departure_datetime'] = data['base_departure_datetime'].strftime('%H:%M')
         html = self.render_card_html(
@@ -69,7 +75,8 @@ class Navitia(EventType):
         {{#delayed}}
         <div>Delayed (initially {{base_departure_datetime}}).<br>
         {{/delayed}}
-        <div style="font-size:3em;text-align:center;margin:20px 0;{{#delayed}}color:#FF4136;{{/delayed}}">{{departure_datetime}}</div>
+        <div style="color:#ccc;text-align:center;margin-top:20px;">{{departure_date}}</div>
+        <div style="font-size:3em;text-align:center;margin:5px 0 20px 0;{{#delayed}}color:#FF4136;{{/delayed}}">{{departure_datetime}}</div>
         {{#delayed}}
         <div><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>{{delay}}</strong> minutes late.</div>
         {{/delayed}}

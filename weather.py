@@ -40,7 +40,7 @@ class Weather(EventType):
 
         return w
 
-    def cards(self):
+    def cards(self, _):
         data = self.fetch()
         w = data.get('currently')
         raw_daily = data.get('daily', {}).get('data', [])
@@ -60,14 +60,14 @@ class Weather(EventType):
         html = self.render_card_html(
         """<h1 style="margin:0">{{place}}</h1>
         <h2 style="margin:0 0 20px 0">{{summary}}</h2>
-        <div style="display:flex;">
+        <div style="display:flex;margin-bottom:20px;">
         <div style="flex: 2;">
         <i style="font-size:5em;" class="wi wi-forecast-io-{{icon}}"></i>
         </div>
             <div style="flex: 1;font-size:2.5em;padding-top:20px;">{{temperature}}</div>
             <div style="flex: 1;font-size:1.2em;padding-top:25px;"><span style="padding:10px">&deg;C</span></div>
         </div>
-        <div style="margin-top:10px;color:#ccc;">Will it rain? <small>(next 24 hours)</small></div>
+        <div style="color:#ccc;">Will it rain? <small>(next 24 hours)</small></div>
         <div style="height:50px;padding-left:25px;">
         <span class="sparkline">
         {{#precipProbability}}

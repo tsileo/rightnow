@@ -49,7 +49,7 @@ class EventType(object):
     def check_conditions(self, dt, data):
         """Will check the for dynamic condition `should_display` and the embedded `CONDITIONS`."""
         out = self.should_display(dt, data)
-        for cond in conditions:
+        for cond in self.CONDITIONS:
             out = out and cond.check(dt, data)
         return out
 
