@@ -29,12 +29,31 @@ DAY_VALUE = {
 
 class DayRange(object):
     def __init__(self, start, end):
-        self.start = start
-        self.end = end
+        """Takes two DayEnum as args.
+
+        >>> DayRange(DayEnum.MONDAY, DayEnum.FRIDAY)
+
+        """
+        self.start = start.value
+        self.end = end.value
 
     def check(self, dt, _):
         dt_day = DayEnum(dt.strftime('%a').lower()).value
         return DAY_VALUE.get(self.start) <= DAY_VALUE.get(dt_day) <= DAY_VALUE.get(self.end)
+
+
+class HourRange(object):
+    def __init__(self, start, end):
+        """Takes two hours at %H%M%S format.
+
+        >>> HourRange('080000', '220000')
+
+        """
+        self.start = start
+        self.end = end
+
+    def check(self, dt, _):
+        return self.start < dt.strftime('%H%M%S') < self.end
 
 # TODO(tsileo): HourRange, MatchCalendar (with reverse, i.e not a specific tag)
 
