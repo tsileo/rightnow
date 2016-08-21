@@ -30,7 +30,7 @@ body {
   border-radius: 2px;
   box-shadow: 0 2px 5px #ccc;
   margin: 8px 0;
-  width: 280px; /* collumn size */
+  width: 300px; /* collumn size */
   transition: box-shadow .5s;
   cursor: default;
 }
@@ -38,7 +38,7 @@ body {
   padding:10px 10px 20px 10px;
 }
 .max {
-  max-width: 280px;
+  max-width: 300px;
 }
 .card.medium {
   width: 496px; /* medium = (col * 2) + gutter | 496px = (240px * 2) + 16px */
@@ -97,7 +97,7 @@ body {
 <script>
 var masonry = new Masonry(document.querySelector('.note'), {
     itemSelector: '.note',
-    columnWidth: 280,
+    columnWidth: 320,
     gutter: 16,
     fitWidth: true
 });
